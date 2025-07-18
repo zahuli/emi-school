@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice</title>
+</head>
+
+<body>
+    <h1>ВЕЖБАЊЕ МАТЕМАТИКЕ</h1>
+    <h2>{{ a }} {{ operator }} {{ b }} = ?</h2>
+
+    <form method="POST">
+        <input type="hidden" name="a" value="{{ a }}">
+        <input type="hidden" name="b" value="{{ b }}">
+        <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
+
+        <label for="answer">ВАШ ОДГОВОР:</label>
+        <input type="number" name="answer" required>
+        <button type="submit">КЛИКНИ</button>
+    </form>
+
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ request.path }}">ПРОБАЈТЕ СЛЕДЕЋИ ПРОБЛЕМ</a>
+    <br>
+    <a href="/">НАЗАД НА ПОЧЕТАК</a>
+</body>
+
+</html>
