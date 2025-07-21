@@ -3,17 +3,42 @@ import random
 
 app = Flask(__name__)
 
+used_addition_problems = set()
+used_subtraction_problems = set()
+
+
+used_addition_problems = set()
+
 
 def generate_addition_problem():
-    a = random.randint(0, 9)
-    b = random.randint(0, 9 - a)  # Ensuring sum is within limits
-    return a, b, a + b
+    attempts = 0
+    while True:
+        a = random.randint(1, 8)  # max 8 so b can be at least 1
+        max_b = 9 - a
+        if max_b < 1:
+            continue  # skip to avoid invalid range
+        b = random.randint(1, max_b)
+        problem = (a, b)
+        if problem not in used_addition_problems:
+            used_addition_problems.add(problem)
+            return a, b, a + b
+        attempts += 1
+        if attempts > 30:
+            used_addition_problems.clear()
 
 
 def generate_subtraction_problem():
-    a = random.randint(1, 9)
-    b = random.randint(0, a)  # Ensuring no negative results
-    return a, b, a - b
+    attempts = 0
+    while True:
+        a = random.randint(1, 9)
+        b = random.randint(1, a)
+        problem = (a, b)
+        if problem not in used_subtraction_problems:
+            used_subtraction_problems.add(problem)
+            return a, b, a - b
+        attempts += 1
+        if attempts > 30:
+            used_subtraction_problems.clear()
 
 
 @app.route('/')
