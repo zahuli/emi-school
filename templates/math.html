@@ -1,14 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Practice</title>
+    <title>Вежбање Математике</title>
+    <style>
+        body {
+            background-color: #e0f7fa;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding: 40px;
+            color: #333;
+        }
+
+        h1 {
+            color: #00796b;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        form {
+            margin-top: 30px;
+        }
+
+        input[type="number"] {
+            font-size: 1.5rem;
+            padding: 10px;
+            width: 80px;
+            border-radius: 8px;
+            border: 2px solid #00796b;
+        }
+
+        button {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #388e3c;
+        }
+
+        p {
+            font-size: 1.4rem;
+            margin-top: 20px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #00796b;
+            background-color: #b2ebf2;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        a:hover {
+            background-color: #80deea;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>ВЕЖБАЊЕ МАТЕМАТИКЕ</h1>
+    <h1>🧠 ВЕЖБАЊЕ МАТЕМАТИКЕ 🧠</h1>
     <h2>{{ a }} {{ operator }} {{ b }} = ?</h2>
 
     <form method="POST">
@@ -16,19 +80,18 @@
         <input type="hidden" name="b" value="{{ b }}">
         <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
 
-        <label for="answer">ВАШ ОДГОВОР:</label>
+        <label for="answer">Твој одговор:</label>
         <input type="number" name="answer" required>
-        <button type="submit">КЛИКНИ</button>
+        <button type="submit">Провери</button>
     </form>
 
     {% if message %}
     <p>{{ message }}</p>
     {% endif %}
 
-    <br>
-    <a href="{{ request.path }}">ПРОБАЈТЕ СЛЕДЕЋИ ПРОБЛЕМ</a>
-    <br>
-    <a href="/">НАЗАД НА ПОЧЕТАК</a>
+    <a href="{{ request.path }}">➡️ Нови задатак</a>
+    <br><br>
+    <a href="/">🏠 Назад на почетак</a>
 </body>
 
 </html>
