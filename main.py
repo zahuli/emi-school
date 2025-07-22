@@ -7,28 +7,26 @@ used_addition_problems = set()
 used_subtraction_problems = set()
 
 
-used_addition_problems = set()
-
-
 def generate_addition_problem():
-    attempts = 0
+    if len(used_addition_problems) > 30:
+        used_addition_problems.clear()
+
     while True:
-        a = random.randint(1, 8)  # max 8 so b can be at least 1
+        a = random.randint(1, 8)  # ensures b >= 1
         max_b = 9 - a
         if max_b < 1:
-            continue  # skip to avoid invalid range
+            continue
         b = random.randint(1, max_b)
         problem = (a, b)
         if problem not in used_addition_problems:
             used_addition_problems.add(problem)
             return a, b, a + b
-        attempts += 1
-        if attempts > 30:
-            used_addition_problems.clear()
 
 
 def generate_subtraction_problem():
-    attempts = 0
+    if len(used_subtraction_problems) > 30:
+        used_subtraction_problems.clear()
+
     while True:
         a = random.randint(1, 9)
         b = random.randint(1, a)
@@ -36,9 +34,6 @@ def generate_subtraction_problem():
         if problem not in used_subtraction_problems:
             used_subtraction_problems.add(problem)
             return a, b, a - b
-        attempts += 1
-        if attempts > 30:
-            used_subtraction_problems.clear()
 
 
 @app.route('/')
