@@ -68,6 +68,20 @@
         a:hover {
             background-color: #80deea;
         }
+
+        input:disabled {
+            background-color: #f0f0f0;
+        }
+
+        input.correct {
+            border: 3px solid green;
+            background-color: #e0ffe0;
+        }
+
+        input.wrong {
+            border: 3px solid red;
+            background-color: #ffe0e0;
+        }
     </style>
 </head>
 
@@ -81,8 +95,8 @@
         <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
 
         <label for="answer">Твој одговор:</label>
-        <input type="number" name="answer" required>
-        <button type="submit">Провери</button>
+        <input type="number" name="answer" required id="answerInput" {% if message %}disabled{% endif %}>
+        <button type="submit" id="submitBtn" {% if message %}disabled{% endif %}>Провери</button>
     </form>
 
     {% if message %}
@@ -101,11 +115,25 @@
         window.addEventListener('DOMContentLoaded', () => {
             const msgText = {{ message | tojson | safe
         }};
+        const input = document.getElementById('answerInput');
+        const button = document.getElementById('submitBtn');
+
         if (msgText.includes("НЕТАЧАН")) {
             document.getElementById("wrongSound").play();
+            console.log("Marking wrong");
+            input.classList.add("wrong");
         } else if (msgText.includes("ТАЧАН")) {
             document.getElementById("correctSound").play();
+            console.log("Marking correct");
+            input.classList.add("correct");
         }
+
+        // Disable form resubmission manually (in case user hits Enter again)
+        const form = document.getElementById("mathForm");
+        form.addEventListener("submit", () => {
+            input.disabled = true;
+            button.disabled = true;
+        });
     });
     </script>
 
