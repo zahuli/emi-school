@@ -92,6 +92,25 @@
     <a href="{{ request.path }}">➡️ Нови задатак</a>
     <br><br>
     <a href="/">🏠 Назад на почетак</a>
+
+
+    <audio id="correctSound" src="{{ url_for('static', filename='correct.mp3') }}"></audio>
+    <audio id="wrongSound" src="{{ url_for('static', filename='wrong.mp3') }}"></audio>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const msgText = {{ message | tojson | safe
+        }};
+        if (msgText.includes("НЕТАЧАН")) {
+            document.getElementById("wrongSound").play();
+        } else if (msgText.includes("ТАЧАН")) {
+            document.getElementById("correctSound").play();
+        }
+    });
+    </script>
+
+
+
 </body>
 
 </html>
