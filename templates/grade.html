@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Оцена</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            text-align: center;
+            background-color: #fff3cd;
+            padding: 60px;
+        }
+
+        .grade {
+            font-size: 10rem;
+            font-weight: 700;
+            color: #ff0000;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 2rem;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        a {
+            margin-top: 40px;
+            display: inline-block;
+            font-size: 1.5rem;
+            padding: 15px 25px;
+            background: #ffd54f;
+            color: black;
+            text-decoration: none;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>✨ Завршили сте тест! ✨</h1>
+
+    <div class="grade">{{ grade }}</div>
+
+    <h2>Тачних: {{ correct }} / {{ total }}</h2>
+
+    <div class="message">
+        {% if grade == 5 %}
+        Браво! Савршен резултат! 🌟
+        {% elif grade == 4 %}
+        Одлично! Само још мало до савршеног! 😀
+        {% elif grade == 3 %}
+        Добро је! Уз мало вежбе биће још боље! 🙂
+        {% elif grade == 2 %}
+        Може много боље — вежбај још мало! 💪
+        {% else %}
+        Немој да бринеш — само настави да вежбаш! ❤️
+        {% endif %}
+    </div>
+
+    <a href="/">🏠 Назад на почетак</a>
+
+</body>
+
+</html>

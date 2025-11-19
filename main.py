@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import random
 
 app = Flask(__name__)
+app.secret_key = "supersecret123"  # session key
+
 
 used_addition_problems = set()
 used_subtraction_problems = set()
@@ -38,6 +40,7 @@ def generate_subtraction_problem():
 
 @app.route('/')
 def home():
+    session.clear()  # reset score and counter
     return render_template('index.html')
 
 
@@ -89,6 +92,128 @@ def subtraction():
             message = "ПОГРЕШАН УНОС. УНЕСИТЕ БРОЈ."
 
     return render_template('math.html', a=a, b=b, correct_answer=correct_answer, operator='-', message=message)
+
+@app.route('/addition_with_grade', methods=['GET', 'POST'])
+def addition_with_grade():
+    if "count" not in session:
+        session["count"] = 0
+        session["correct"] = 0
+    
+      # If there are 20 tasks, go to the grade
+    if session["count"] >= 20:
+        return redirect(url_for("grade_page", mode="addition"))
+
+    # the first task or the next task
+    if request.method == 'GET':
+        a, b, correct = generate_addition_problem()
+        session["a"] = a
+        session["b"] = b
+        session["correct_answer"] = correct
+        message = ""
+    else:
+        try:
+            session["a"] = int(request.form['a'])
+            session["b"] = int(request.form['b'])
+            session["correct_answer"] = int(request.form['correct_answer']) 
+            user_answer = request.form.get("answer")
+
+            if user_answer and user_answer.strip():
+                if int(user_answer) == session["correct_answer"]:
+                    message = "ТАЧАН ОДГОВОР! 😊"
+                    session["correct"] += 1
+                else:
+                    message = "НЕТАЧАН ОДГОВОР! ❌"
+            else:
+                message = "МОЛИМ ВАС УНЕСИТЕ БРОЈ."
+        except ValueError:
+            message = "ПОГРЕШАН УНОС. УНЕСИТЕ БРОЈ."
+        
+        session["count"] += 1
+        print(session)
+
+    return render_template(
+        "math_with_grade.html",
+        a=session["a"],
+        b=session["b"],
+        operator="+",
+        correct_answer=session["correct_answer"],
+        correct_counter = session["correct"],
+        message=message,
+        counter=session["count"] + 1  # show 1/20, 2/20...
+    )
+
+@app.route('/subtraction_with_grade', methods=['GET', 'POST'])
+def subtraction_with_grade():
+    if "count" not in session:
+        session["count"] = 0
+        session["correct"] = 0
+
+    if session["count"] >= 20:
+        return redirect(url_for("grade_page", mode="subtraction"))
+
+    if request.method == 'GET':
+        a, b, correct = generate_subtraction_problem()
+        session["a"] = a
+        session["b"] = b
+        session["correct_answer"] = correct
+        message = ""
+    else:
+        try:
+            session["a"] = int(request.form['a'])
+            session["b"] = int(request.form['b'])
+            session["correct_answer"] = int(request.form['correct_answer']) 
+            user_answer = request.form.get("answer")
+
+            if user_answer and user_answer.strip():
+                if int(user_answer) == session["correct_answer"]:
+                    message = "ТАЧАН ОДГОВОР! 😊"
+                    session["correct"] += 1
+                else:
+                    message = "НЕТАЧАН ОДГОВОР! ❌"
+            else:
+                message = "МОЛИМ ВАС УНЕСИТЕ БРОЈ."
+        except ValueError:
+            message = "ПОГРЕШАН УНОС. УНЕСИТЕ БРОЈ."
+
+        session["count"] += 1
+        print(session)
+
+    return render_template(
+        "math_with_grade.html",
+        a=session["a"],
+        b=session["b"],
+        operator="-",
+        correct_answer=session["correct_answer"],
+        correct_counter = session["correct"],
+        message=message,
+        counter=session["count"] + 1
+    )
+
+@app.route('/grade/<mode>')
+def grade_page(mode):
+    correct = session.get("correct", 0)
+    total = 20
+
+    percent = correct / total
+
+    if percent >= 0.9:
+        grade = 5
+    elif percent >= 0.75:
+        grade = 4
+    elif percent >= 0.6:
+        grade = 3
+    elif percent >= 0.4:
+        grade = 2
+    else:
+        grade = 1
+
+    return render_template(
+        "grade.html",
+        correct=correct,
+        total=total,
+        grade=grade,
+        mode=mode
+    )
 
 
 if __name__ == '__main__':
