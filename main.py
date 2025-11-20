@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import random
 
 app = Flask(__name__)
-app.secret_key = "supersecret123"  # session key
+app.secret_key = "supersecret123"
 
 
 used_addition_problems = set()
@@ -99,7 +99,6 @@ def addition_with_grade():
         session["count"] = 0
         session["correct"] = 0
     
-      # If there are 20 tasks, go to the grade
     if session["count"] >= 20:
         return redirect(url_for("grade_page", mode="addition"))
 
@@ -139,7 +138,7 @@ def addition_with_grade():
         correct_answer=session["correct_answer"],
         correct_counter = session["correct"],
         message=message,
-        counter=session["count"] + 1  # show 1/20, 2/20...
+        counter=session["count"] + 1
     )
 
 @app.route('/subtraction_with_grade', methods=['GET', 'POST'])
