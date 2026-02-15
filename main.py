@@ -10,12 +10,12 @@ used_subtraction_problems = set()
 
 
 def generate_addition_problem():
-    if len(used_addition_problems) > 30:
+    if len(used_addition_problems) > 100:  # Updated limit for combinations up to 20
         used_addition_problems.clear()
 
     while True:
-        a = random.randint(1, 8)  # ensures b >= 1
-        max_b = 9 - a
+        a = random.randint(1, 18)  # Updated range for numbers up to 20
+        max_b = 19 - a
         if max_b < 1:
             continue
         b = random.randint(1, max_b)
@@ -26,11 +26,11 @@ def generate_addition_problem():
 
 
 def generate_subtraction_problem():
-    if len(used_subtraction_problems) > 30:
+    if len(used_subtraction_problems) > 100:  # Updated limit for combinations up to 20
         used_subtraction_problems.clear()
 
     while True:
-        a = random.randint(1, 9)
+        a = random.randint(1, 19)  # Updated range for numbers up to 20
         b = random.randint(1, a)
         problem = (a, b)
         if problem not in used_subtraction_problems:
